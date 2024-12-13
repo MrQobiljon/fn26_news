@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import FileExtensionValidator
 
 # Create your models here.
 
@@ -24,6 +25,9 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Kategoriya")
     published = models.BooleanField(default=True, verbose_name="Saytga chiqarish",
                                     help_text="Agar galochka qo'ysangiz sayta chiqaradi!!!")
+    video = models.FileField(upload_to="post/videos/", validators=[
+        FileExtensionValidator(['mp4', 'avi'], message="Faqat mp4 va avi formatidagilarni kiritolasiz!")
+    ], null=True, blank=True)
 
     def __str__(self):
         return self.name

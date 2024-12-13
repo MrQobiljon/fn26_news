@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    {% include 'components/_styles.html' %}
+
+    <title>{{ title }}</title>
+</head>
+<body>
+
+
+<div class="container">
+
+{% include 'components/_navbar.html' %}
+
+
+{% block category %}
+{% endblock category %}
+
+
+{% block post %}
+{% endblock post %}
+
+
+{% include 'components/_footer.html' %}
+
+</div>
+
+{% include 'components/_scripts.html' %}
+
+</body>
+</html>
