@@ -2,7 +2,7 @@
 {% load news_tags %}
 
 
-{% block category %}
+{% block content %}
 <!--Categoriyalar-->
 <div class="d-flex justify-content-center">
     {% get_categories as categories %}
@@ -15,10 +15,8 @@
     {% endfor %}
 </div>
 <!--End Categoriyalar-->
-{% endblock category %}
 
 
-{% block post %}
 <!--Postlar-->
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for post in posts %}
@@ -26,4 +24,4 @@
     {% endfor %}
 </div>
 <!-- End Postlar-->
-{% endblock post %}
+{% endblock content %}
