@@ -1,9 +1,11 @@
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 
 from .models import Category, Post
-from .forms import PostForm
+from .forms import PostForm, RegistrationForm, LoginForm
 
 # Create your views here.
 
@@ -98,3 +100,52 @@ def delete_post(request, pk):
     }
     return render(request, 'confirm_delete.html', context)
 
+
+
+def register(request: WSGIRequest):
+    if request.method == 'POST':
+        form = RegistrationForm(data=request.POST)
+        if form.is_valid():
+            password = request.POST["password"]
+            password_repeat = request.POST["password_repeat"]
+            if password == password_repeat:
+                username = request.POST['username']
+                email = request.POST['email']
+                user = User.objects.create_user(username, email, password)
+                print("Siz ro'yxatdan o'tdingiz!")
+                return redirect('login')
+
+    else:
+        form = RegistrationForm()
+
+    context = {
+        "form": form
+    }
+    return render(request, "auth/register.html", context)
+
+
+
+def login_view(request: WSGIRequest):
+    if request.method == 'POST':
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                print("Xush kelibsiz!")
+                return redirect('home')
+            else:
+                print("Username yoki parol hato")
+    else:
+        form = LoginForm()
+    context = {
+        "form": form
+    }
+    return render(request, "auth/login.html", context)
+
+
+def logout_view(request: WSGIRequest):
+    logout(request)
+    return redirect('login')
